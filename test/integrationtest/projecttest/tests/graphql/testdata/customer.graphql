@@ -1,0 +1,60 @@
+query {
+    Commerce_Customer {
+        id
+        personalData {
+            gender
+            prefix
+            firstName
+            middleName
+            lastName
+            mainEmail
+            birthday
+            nationality
+        }
+        addresses {
+            id
+            company
+            firstName
+            lastName
+            street
+            streetNumber
+            additionalAddressLines
+            postCode
+            city
+            regionCode
+            countryCode
+            telephone
+            email
+            defaultBilling
+            defaultShipping
+        }
+        defaultShippingAddress {
+            company
+            firstName
+            lastName
+            street
+            streetNumber
+            additionalAddressLines
+            postCode
+            city
+            regionCode
+            countryCode
+            telephone
+            email
+        }
+        defaultBillingAddress {
+            company
+            firstName
+            lastName
+            street
+            streetNumber
+            additionalAddressLines
+            postCode
+            city
+            regionCode
+            countryCode
+            telephone
+            email
+        }
+    }
+}

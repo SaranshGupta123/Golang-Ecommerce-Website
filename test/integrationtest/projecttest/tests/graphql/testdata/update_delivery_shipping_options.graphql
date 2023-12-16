@@ -1,0 +1,18 @@
+mutation {
+    Commerce_Cart_UpdateDeliveryShippingOptions(
+        shippingOptions: [
+            {
+                deliveryCode: "foo"
+                method: "foo-method"
+                carrier: "foo-carrier"
+            }
+            {
+                deliveryCode: "bar"
+                method: "bar-method"
+                carrier: "bar-carrier"
+            }
+        ]
+    ) {
+        processed
+    }
+}

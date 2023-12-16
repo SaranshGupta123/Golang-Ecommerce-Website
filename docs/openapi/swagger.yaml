@@ -1,0 +1,1747 @@
+definitions:
+  ProductAttribute:
+    properties:
+      Code:
+        description: Code is the internal attribute identifier
+        type: string
+      CodeLabel:
+        description: CodeLabel is the human-readable (perhaps localized) attribute
+          name
+        type: string
+      Label:
+        description: Label is the human-readable (perhaps localized) attribute value
+        type: string
+      RawValue:
+        description: RawValue is the untouched original value of the attribute
+        type: object
+      UnitCode:
+        description: UnitCode is the internal code of the attribute values measuring
+          unit
+        type: string
+    type: object
+  ProductAttributes:
+    additionalProperties:
+      $ref: '#/definitions/ProductAttribute'
+    type: object
+  ProductMedia:
+    properties:
+      MimeType:
+        type: string
+      Reference:
+        type: string
+      Title:
+        type: string
+      Type:
+        type: string
+      Usage:
+        type: string
+    type: object
+  application.PlaceOrderPaymentInfo:
+    properties:
+      Amount:
+        $ref: '#/definitions/domain.Price'
+      CreditCardInfo:
+        $ref: '#/definitions/placeorder.CreditCardInfo'
+      Gateway:
+        type: string
+      Method:
+        type: string
+      PaymentProvider:
+        type: string
+      Title:
+        type: string
+    type: object
+  cart.AdditionalData:
+    properties:
+      CustomAttributes:
+        additionalProperties:
+          type: string
+        description: CustomAttributes list of key values
+        type: object
+      ReservedOrderID:
+        description: ReservedOrderID is an ID already known by the Cart of the future
+          order ID
+        type: string
+    type: object
+  cart.Address:
+    properties:
+      AdditionalAddressLines:
+        items:
+          type: string
+        type: array
+      City:
+        type: string
+      Company:
+        type: string
+      Country:
+        type: string
+      CountryCode:
+        type: string
+      Email:
+        type: string
+      Firstname:
+        type: string
+      Lastname:
+        type: string
+      MiddleName:
+        type: string
+      PostCode:
+        type: string
+      RegionCode:
+        type: string
+      Salutation:
+        type: string
+      State:
+        type: string
+      Street:
+        type: string
+      StreetNr:
+        type: string
+      Telephone:
+        description: 'Deprecated: parts of number should be distinguished, please
+          use TelephoneCountryCode, TelephoneAreaCode and TelephoneNumber'
+        type: string
+      TelephoneAreaCode:
+        type: string
+      TelephoneCountryCode:
+        type: string
+      TelephoneNumber:
+        type: string
+      Title:
+        type: string
+      Vat:
+        type: string
+    type: object
+  cart.AppliedDiscount:
+    properties:
+      Applied:
+        $ref: '#/definitions/domain.Price'
+        description: 'how much of the discount has been subtracted from cart price,
+          IMPORTANT: always negative'
+      CampaignCode:
+        description: unique code of the underlying campaign or rule e.g. "summer-campaign-2018"
+        type: string
+      CouponCode:
+        description: code of discount e.g. provided by user "summer2018"
+        type: string
+      IsItemRelated:
+        description: flag indicating if the discount is applied due to item in cart
+        type: boolean
+      Label:
+        description: readable name of discount "Super Summer Sale 2018"
+        type: string
+      SortOrder:
+        description: indicates in which order discount have been applied, low value
+          has been applied before high value
+        type: integer
+      Type:
+        description: to distinguish between discounts
+        type: string
+    type: object
+  cart.AppliedGiftCard:
+    properties:
+      Applied:
+        $ref: '#/definitions/domain.Price'
+        description: how much of the gift card has been subtracted from cart price
+      Code:
+        type: string
+      CustomAttributes:
+        additionalProperties: true
+        description: additional custom attributes
+        type: object
+      Remaining:
+        $ref: '#/definitions/domain.Price'
+        description: how much of the gift card is still available
+    type: object
+  cart.Cart:
+    properties:
+      AdditionalData:
+        $ref: '#/definitions/cart.AdditionalData'
+        description: AdditionalData can be used for Custom attributes
+      AppliedCouponCodes:
+        description: AppliedCouponCodes hold the coupons or discount codes that are
+          applied to the cart
+        items:
+          $ref: '#/definitions/cart.CouponCode'
+        type: array
+      AppliedGiftCards:
+        description: AppliedGiftCards is a list of applied gift cards
+        items:
+          $ref: '#/definitions/cart.AppliedGiftCard'
+        type: array
+      AuthenticatedUserID:
+        description: AuthenticatedUserID holds the potential customer ID
+        type: string
+      BelongsToAuthenticatedUser:
+        description: BelongsToAuthenticatedUser displays if the cart is guest cart
+          (false) or from an authenticated user (true)
+        type: boolean
+      BillingAddress:
+        $ref: '#/definitions/cart.Address'
+        description: BillingAddress is the main billing address (relevant for all
+          payments/invoices)
+      DefaultCurrency:
+        type: string
+      Deliveries:
+        description: Deliveries contains a list of desired Deliveries (or Shipments)
+          involved in this cart
+        items:
+          $ref: '#/definitions/cart.Delivery'
+        type: array
+      EntityID:
+        description: EntityID is a second identifier that may be used by some backends
+        type: string
+      GrandTotal:
+        $ref: '#/definitions/domain.Price'
+        description: GrandTotal is the final amount that need to be paid by the customer
+          (gross)
+      GrandTotalNet:
+        $ref: '#/definitions/domain.Price'
+        description: GrandTotalNet is the corresponding net value to GrandTotal
+      GrandTotalNetWithGiftCards:
+        $ref: '#/definitions/domain.Price'
+        description: GrandTotalNetWithGiftCards is the corresponding net value to
+          GrandTotalWithGiftCards
+      GrandTotalWithGiftCards:
+        $ref: '#/definitions/domain.Price'
+        description: GrandTotalWithGiftCards is the final amount with the applied
+          gift cards subtracted.
+      ID:
+        description: ID is the main identifier of the cart
+        type: string
+      ItemRelatedDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: ItemRelatedDiscountAmount is the sum of discounts that are related
+          to the item (including shipping discounts)
+      NonItemRelatedDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: NonItemRelatedDiscountAmount is the sum of discounts that are
+          not related to the item (including shipping discounts)
+      PaymentSelection:
+        $ref: '#/definitions/cart.PaymentSelection'
+        description: PaymentSelection is used to store information on "how" the customer
+          wants to pay
+      Purchaser:
+        $ref: '#/definitions/cart.Person'
+        description: Purchaser hold additional infos for the legal contact person
+          in this order
+      ShippingGross:
+        $ref: '#/definitions/domain.Price'
+        description: ShippingGross is the sum of all shipping costs including tax
+      ShippingGrossWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+        description: ShippingGrossWithDiscounts is the sum of all shipping costs with
+          all shipping discounts including tax
+      ShippingNet:
+        $ref: '#/definitions/domain.Price'
+        description: ShippingNet is the sum of all shipping costs
+      ShippingNetWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+        description: ShippingNetWithDiscounts is the sum of all shipping costs with
+          all shipping discounts
+      SubTotalGross:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalGross is the sum of all delivery subtotals (without shipping/
+          discounts)
+      SubTotalGrossWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalGrossWithDiscounts is the sum of row gross prices reduced
+          by the applied discounts
+      SubTotalNet:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalNet is the sum of all delivery net subtotals (without
+          shipping/ discounts)
+      SubTotalNetWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalNetWithDiscounts is the sum of row net prices reduced
+          by the net value of the applied discounts
+      TotalDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: TotalDiscountAmount is the sum of all discounts (incl. shipping)
+      TotalGiftCardAmount:
+        $ref: '#/definitions/domain.Price'
+        description: AppliedGiftCardsAmount is the part of GrandTotal which is paid
+          by gift cards
+      Totalitems:
+        description: Additional non taxable totals
+        items:
+          $ref: '#/definitions/cart.Totalitem'
+        type: array
+    type: object
+  cart.CouponCode:
+    properties:
+      Code:
+        type: string
+      CustomAttributes:
+        additionalProperties: true
+        description: CustomAttributes can hold additional data for coupon code - keys
+          and values are project specific
+        type: object
+    type: object
+  cart.Delivery:
+    properties:
+      Cartitems:
+        description: Cartitems is the list of items belonging to this delivery
+        items:
+          $ref: '#/definitions/cart.Item'
+        type: array
+      DeliveryInfo:
+        $ref: '#/definitions/cart.DeliveryInfo'
+        description: DeliveryInfo contains details for this delivery e.g. how and
+          where the delivery should be delivered to
+      GrandTotal:
+        $ref: '#/definitions/domain.Price'
+        description: GrandTotal contains the final price to pay
+      ItemRelatedDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: ItemRelatedDiscountAmount contains the sum of discounts that
+          are related to the item, e.g. promo due to product attribute
+      NonItemRelatedDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: NonItemRelatedDiscountAmount contains the sum of discounts that
+          are not related to the item, e.g. a general promo
+      ShippingItem:
+        $ref: '#/definitions/cart.ShippingItem'
+        description: "ShippingItem\trepresent the shipping cost that may be involved
+          in this delivery"
+      SubTotalDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: TotalDiscountAmount contains the sum of all discounts (excl.
+          shipping)
+      SubTotalGross:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalGross contains the sum of row gross prices, without shipping/discounts
+      SubTotalGrossWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalGrossWithDiscounts contains the sum of row gross prices
+          reduced by the applied discounts
+      SubTotalNet:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalNet contains the sum of row net prices, without shipping/discounts
+      SubTotalNetWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+        description: SubTotalNetWithDiscounts contains the sum of row net prices reduced
+          by the net value of the applied discounts
+      TotalDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: TotalDiscountAmount contains the sum of all discounts (incl.
+          shipping)
+    type: object
+  cart.DeliveryInfo:
+    properties:
+      AdditionalData:
+        additionalProperties:
+          type: string
+        description: AdditionalData can be used to store project specific information
+          on the delivery
+        type: object
+      Carrier:
+        description: Carrier optional name of the Carrier that should be responsible
+          for executing the delivery
+        type: string
+      Code:
+        description: |-
+          Code is a project specific identifier for the Delivery - you need it for the AddToCart Request for example
+          the code can follow the convention in the Readme: Type_Method_LocationType_LocationCode
+        type: string
+      DeliveryLocation:
+        $ref: '#/definitions/cart.DeliveryLocation'
+        description: DeliveryLocation is the target location for the delivery
+      DesiredTime:
+        description: DesiredTime is an optional desired time for the delivery
+        type: string
+      Method:
+        description: Method is the shipping method something that is project specific
+          and that can mean different delivery qualities with different delivery costs
+        type: string
+      Workflow:
+        description: Workflow of the Delivery e.g. delivery or pickup, see DeliveryWorkflowPickup,
+          DeliveryWorkflowDelivery or DeliveryWorkflowUnspecified
+        type: string
+    type: object
+  cart.DeliveryLocation:
+    properties:
+      Address:
+        $ref: '#/definitions/cart.Address'
+        description: Address contains the address of the delivery location, maybe
+          not relevant if the type is not address
+      Code:
+        description: Code is an optional identifier of this location/destination
+        type: string
+      Type:
+        description: Type is the type of the delivery - use some of the constant defined
+          in the package like DeliverylocationTypeAddress
+        type: string
+      UseBillingAddress:
+        description: UseBillingAddress if the address should be taken from billing
+          (only relevant for type address)
+        type: boolean
+    type: object
+  cart.ExistingCustomerData:
+    properties:
+      ID:
+        description: ID of the customer
+        type: string
+    type: object
+  cart.Item:
+    properties:
+      AdditionalData:
+        additionalProperties:
+          type: string
+        type: object
+      AppliedDiscounts:
+        description: |-
+          AppliedDiscounts contains the details about the discounts applied to this item - they can be "itemrelated" or not
+          itemrelated would be e.g. special price, buy 3 pay 2
+          non-itemrelated would be e.g. 10% on everything
+        items:
+          $ref: '#/definitions/cart.AppliedDiscount'
+        type: array
+      BundleConfig:
+        $ref: '#/definitions/domain.BundleConfiguration'
+      ExternalReference:
+        description: |-
+          ExternalReference can be used by cart service implementations to separate the representation in an external
+          cart service from the unique item ID
+        type: string
+      ID:
+        description: ID of the item - needs to be unique over the whole cart
+        type: string
+      ItemRelatedDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: ItemRelatedDiscountAmount is the sum of all itemrelated Discounts
+      MarketplaceCode:
+        description: MarketplaceCode is the identifier for the product
+        type: string
+      NonItemRelatedDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: NonItemRelatedDiscountAmount is the sum of non-itemrelated Discounts
+          where IsItemRelated = false
+      ProductName:
+        type: string
+      Qty:
+        type: integer
+      RowPriceGross:
+        $ref: '#/definitions/domain.Price'
+        description: RowPriceGross is the price incl. taxes for the whole Qty of products
+      RowPriceGrossWithDiscount:
+        $ref: '#/definitions/domain.Price'
+        description: |-
+          RowPriceGrossWithDiscount is the price incl. taxes with deducted discounts for the whole Qty of products
+          This is in most cases the final price for the customer to pay
+      RowPriceGrossWithItemRelatedDiscount:
+        $ref: '#/definitions/domain.Price'
+        description: RowPriceGrossWithItemRelatedDiscount is the price incl. taxes
+          with deducted item related discounts for the whole Qty of products
+      RowPriceNet:
+        $ref: '#/definitions/domain.Price'
+        description: RowPriceNet is the price excl. taxes for the whole Qty of products
+      RowPriceNetWithDiscount:
+        $ref: '#/definitions/domain.Price'
+        description: RowPriceNetWithDiscount is the discounted net price for the whole
+          Qty of products
+      RowPriceNetWithItemRelatedDiscount:
+        $ref: '#/definitions/domain.Price'
+        description: RowPriceNetWithItemRelatedDiscount is the price excl. taxes with
+          deducted item related discounts for the whole Qty of products
+      RowTaxes:
+        description: RowTaxes is a list of all taxes applied for the given Qty of
+          products
+        items:
+          $ref: '#/definitions/cart.Tax'
+        type: array
+      SinglePriceGross:
+        $ref: '#/definitions/domain.Price'
+        description: SinglePriceGross is the gross price (incl. taxes) for a single
+          product
+      SinglePriceNet:
+        $ref: '#/definitions/domain.Price'
+        description: SinglePriceNet is the net price (excl. taxes) for a single product
+      SourceID:
+        description: Source Id of where the items should be initial picked - This
+          is set by the SourcingLogic
+        type: string
+      TotalDiscountAmount:
+        $ref: '#/definitions/domain.Price'
+        description: TotalDiscountAmount is the sum of all applied discounts (aka
+          the savings for the customer)
+      VariantMarketPlaceCode:
+        description: VariantMarketPlaceCode is used for Configurable products
+        type: string
+    type: object
+  cart.PaymentSelection:
+    type: object
+  cart.Person:
+    properties:
+      Address:
+        $ref: '#/definitions/cart.Address'
+      ExistingCustomerData:
+        $ref: '#/definitions/cart.ExistingCustomerData'
+        description: ExistingCustomerData if the current purchaser is an existing
+          customer - this contains infos about existing customer
+      PersonalDetails:
+        $ref: '#/definitions/cart.PersonalDetails'
+    type: object
+  cart.PersonalDetails:
+    properties:
+      DateOfBirth:
+        type: string
+      Nationality:
+        type: string
+      PassportCountry:
+        type: string
+      PassportNumber:
+        type: string
+    type: object
+  cart.ShippingItem:
+    properties:
+      AppliedDiscounts:
+        items:
+          $ref: '#/definitions/cart.AppliedDiscount'
+        type: array
+      PriceGross:
+        $ref: '#/definitions/domain.Price'
+      PriceGrossWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+      PriceNet:
+        $ref: '#/definitions/domain.Price'
+      PriceNetWithDiscounts:
+        $ref: '#/definitions/domain.Price'
+      TaxAmount:
+        $ref: '#/definitions/domain.Price'
+      Title:
+        type: string
+    type: object
+  cart.Tax:
+    properties:
+      Amount:
+        $ref: '#/definitions/domain.Price'
+      Rate:
+        type: string
+      Type:
+        type: string
+    type: object
+  cart.Teaser:
+    properties:
+      DeliveryCodes:
+        items:
+          type: string
+        type: array
+      ItemCount:
+        type: integer
+      ProductCount:
+        type: integer
+    type: object
+  cart.Totalitem:
+    properties:
+      Code:
+        type: string
+      Price:
+        $ref: '#/definitions/domain.Price'
+      Title:
+        type: string
+      Type:
+        type: string
+    type: object
+  cartResultError:
+    properties:
+      Code:
+        type: string
+      Message:
+        type: string
+    type: object
+  checkoutError:
+    properties:
+      Code:
+        type: string
+      Message:
+        type: string
+    type: object
+  controller.APIResult:
+    properties:
+      Error:
+        $ref: '#/definitions/productResultError'
+      Product:
+        $ref: '#/definitions/domain.BasicProduct'
+      Success:
+        type: boolean
+    type: object
+  controller.CartAPIResult:
+    properties:
+      CartTeaser:
+        $ref: '#/definitions/cart.Teaser'
+      CartValidationResult:
+        $ref: '#/definitions/validation.Result'
+      Data:
+        type: object
+      DataValidationInfo:
+        type: object
+      Error:
+        $ref: '#/definitions/cartResultError'
+        description: Contains details if success is false
+      Success:
+        type: boolean
+    type: object
+  controller.getCartResult:
+    properties:
+      Cart:
+        $ref: '#/definitions/cart.Cart'
+      CartValidationResult:
+        $ref: '#/definitions/validation.Result'
+    type: object
+  controller.placeOrderContext:
+    properties:
+      Cart:
+        $ref: '#/definitions/cart.Cart'
+      CartValidationResult:
+        $ref: '#/definitions/validation.Result'
+      FailedReason:
+        type: string
+      OrderInfos:
+        $ref: '#/definitions/controller.placedOrderInfos'
+      State:
+        type: string
+      StateData:
+        $ref: '#/definitions/process.StateData'
+      UUID:
+        type: string
+    type: object
+  controller.placedOrderInfos:
+    properties:
+      Email:
+        type: string
+      PaymentInfos:
+        items:
+          $ref: '#/definitions/application.PlaceOrderPaymentInfo'
+        type: array
+      PlacedDecoratedCart:
+        $ref: '#/definitions/decorator.DecoratedCart'
+      PlacedOrderInfos:
+        items:
+          $ref: '#/definitions/placeorder.PlacedOrderInfo'
+        type: array
+    type: object
+  controller.startPlaceOrderResult:
+    properties:
+      UUID:
+        type: string
+    type: object
+  decorator.DecoratedCart:
+    properties:
+      Cart:
+        $ref: '#/definitions/cart.Cart'
+      DecoratedDeliveries:
+        items:
+          $ref: '#/definitions/decorator.DecoratedDelivery'
+        type: array
+    type: object
+  decorator.DecoratedCartItem:
+    properties:
+      Item:
+        $ref: '#/definitions/cart.Item'
+      Product:
+        $ref: '#/definitions/domain.BasicProduct'
+    type: object
+  decorator.DecoratedDelivery:
+    properties:
+      DecoratedItems:
+        items:
+          $ref: '#/definitions/decorator.DecoratedCartItem'
+        type: array
+      Delivery:
+        $ref: '#/definitions/cart.Delivery'
+    type: object
+  domain.Badge:
+    properties:
+      Code:
+        type: string
+      Label:
+        type: string
+    type: object
+  domain.BasicProduct:
+    type: object
+  domain.BundleConfiguration:
+    additionalProperties:
+      $ref: '#/definitions/domain.ChoiceConfiguration'
+    type: object
+  domain.CategoryTeaser:
+    properties:
+      Code:
+        description: Code the identifier of the Category
+        type: string
+      Name:
+        description: Name is the speaking name of the category
+        type: string
+      Path:
+        description: The Path (root to leaf) for this Category - separated by "/"
+        type: string
+    type: object
+  domain.ChoiceConfiguration:
+    properties:
+      MarketplaceCode:
+        type: string
+      Qty:
+        type: integer
+      VariantMarketplaceCode:
+        type: string
+    type: object
+  domain.Error:
+    properties:
+      ErrorCode:
+        type: string
+      ErrorMessage:
+        type: string
+    type: object
+  domain.FlowActionData:
+    properties:
+      DisplayData:
+        description: DisplayData holds data, normally HTML to be displayed to the
+          user
+        type: string
+      FormParameter:
+        additionalProperties:
+          $ref: '#/definitions/domain.FormField'
+        type: object
+      URL:
+        description: URL is used to pass URL data to the user if the current state
+          needs some
+        type: string
+      WalletDetails:
+        $ref: '#/definitions/domain.WalletDetails'
+    type: object
+  domain.FlowStatus:
+    properties:
+      Action:
+        description: Action to perform to proceed in the payment flow. If status is
+          "payment_waiting_for_customer" this field contains information about what
+          to do - e.g. "redirect" or "show_iframe"
+        type: string
+      ActionData:
+        $ref: '#/definitions/domain.FlowActionData'
+      Data:
+        description: Data contains additional information related to the action /
+          flow
+        type: object
+      Error:
+        $ref: '#/definitions/domain.Error'
+        description: Error contains additional information in case of an error (e.g.
+          payment failed)
+      Status:
+        description: Status of the payment flow. E.g. "payment_completed", "payment_waiting_for_customer"
+          or "payment_failed"
+        type: string
+    type: object
+  domain.FormField:
+    properties:
+      Value:
+        items:
+          type: string
+        type: array
+    type: object
+  domain.LoyaltyEarningInfo:
+    properties:
+      Default:
+        $ref: '#/definitions/domain.Price'
+      Type:
+        type: string
+    type: object
+  domain.LoyaltyPriceInfo:
+    properties:
+      Context:
+        $ref: '#/definitions/domain.PriceContext'
+      Default:
+        $ref: '#/definitions/domain.Price'
+      DiscountText:
+        type: string
+      Discounted:
+        $ref: '#/definitions/domain.Price'
+      IsDiscounted:
+        type: boolean
+      MaxPointsToSpent:
+        type: string
+      MinPointsToSpent:
+        type: string
+      Type:
+        description: Type or Name of the Loyalty program
+        type: string
+    type: object
+  domain.PaymentRequestAPI:
+    properties:
+      CompleteURL:
+        type: string
+      Details:
+        type: string
+      MerchantValidationURL:
+        type: string
+      Methods:
+        type: string
+      Options:
+        type: string
+    type: object
+  domain.Price:
+    type: object
+  domain.PriceContext:
+    properties:
+      ChannelCode:
+        type: string
+      CustomerGroup:
+        type: string
+      DeliveryCode:
+        type: string
+      Locale:
+        type: string
+    type: object
+  domain.PriceInfo:
+    properties:
+      ActiveBase:
+        type: string
+      ActiveBaseAmount:
+        type: string
+      ActiveBaseUnit:
+        type: string
+      CampaignRules:
+        items:
+          type: string
+        type: array
+      Context:
+        $ref: '#/definitions/domain.PriceContext'
+      Default:
+        $ref: '#/definitions/domain.Price'
+      DenyMoreDiscounts:
+        type: boolean
+      DiscountText:
+        type: string
+      Discounted:
+        $ref: '#/definitions/domain.Price'
+      IsDiscounted:
+        type: boolean
+      TaxClass:
+        type: string
+    type: object
+  domain.SimpleProduct:
+    properties:
+      ActivePrice:
+        $ref: '#/definitions/domain.PriceInfo'
+      Attributes:
+        $ref: '#/definitions/ProductAttributes'
+      AvailablePrices:
+        items:
+          $ref: '#/definitions/domain.PriceInfo'
+        type: array
+      Badges:
+        items:
+          $ref: '#/definitions/domain.Badge'
+        type: array
+      Categories:
+        items:
+          $ref: '#/definitions/domain.CategoryTeaser'
+        type: array
+      CategoryToCodeMapping:
+        items:
+          type: string
+        type: array
+      CreatedAt:
+        type: string
+      Description:
+        type: string
+      Identifier:
+        type: string
+      IsNew:
+        type: boolean
+      IsSaleable:
+        type: boolean
+      Keywords:
+        items:
+          type: string
+        type: array
+      LoyaltyEarnings:
+        description: LoyaltyEarnings holds optional infos about potential loyalty
+          earnings
+        items:
+          $ref: '#/definitions/domain.LoyaltyEarningInfo'
+        type: array
+      LoyaltyPrices:
+        description: LoyaltyPrices holds optional infos for products that can be paid
+          in a loyalty program
+        items:
+          $ref: '#/definitions/domain.LoyaltyPriceInfo'
+        type: array
+      MainCategory:
+        $ref: '#/definitions/domain.CategoryTeaser'
+      MarketPlaceCode:
+        type: string
+      Media:
+        items:
+          $ref: '#/definitions/ProductMedia'
+        type: array
+      RetailerCode:
+        type: string
+      RetailerName:
+        type: string
+      RetailerSku:
+        type: string
+      SaleableFrom:
+        type: string
+      SaleableTo:
+        type: string
+      ShortDescription:
+        type: string
+      Stock:
+        items:
+          $ref: '#/definitions/domain.Stock'
+        type: array
+      StockLevel:
+        description: 'Deprecated: use Stock[x].Level instead'
+        type: string
+      Teaser:
+        $ref: '#/definitions/domain.TeaserData'
+      Title:
+        type: string
+      UpdatedAt:
+        type: string
+      VisibleFrom:
+        type: string
+      VisibleTo:
+        type: string
+    type: object
+  domain.Stock:
+    properties:
+      Amount:
+        type: integer
+      DeliveryCode:
+        type: string
+      InStock:
+        type: boolean
+      Level:
+        type: string
+    type: object
+  domain.TeaserData:
+    properties:
+      Badges:
+        description: Badges optional slice of badges to teaser a product
+        items:
+          $ref: '#/definitions/domain.Badge'
+        type: array
+      MarketPlaceCode:
+        description: The sku that should be used to link from Teasers
+        type: string
+      Media:
+        description: Media
+        items:
+          $ref: '#/definitions/ProductMedia'
+        type: array
+      PreSelectedVariantSku:
+        description: PreSelectedVariantSku might be set for configurables to give
+          a hint to link to a variant of a configurable (That might be the case if
+          a user filters for an attribute and in the teaser the variant with that
+          attribute is shown)
+        type: string
+      ShortDescription:
+        type: string
+      ShortTitle:
+        type: string
+      TeaserAvailablePrices:
+        items:
+          $ref: '#/definitions/domain.PriceInfo'
+        type: array
+      TeaserLoyaltyEarningInfo:
+        $ref: '#/definitions/domain.LoyaltyEarningInfo'
+        description: TeaserLoyaltyEarning is the teaser for the loyalty earning used
+          in grid / list view
+      TeaserLoyaltyPriceInfo:
+        $ref: '#/definitions/domain.LoyaltyPriceInfo'
+        description: TeaserLoyaltyPriceInfo is the loyalty price that can be used
+          for teaser (e.g. on listing views)
+      TeaserPrice:
+        $ref: '#/definitions/domain.PriceInfo'
+        description: TeaserPrice is the price that should be shown in teasers (listview)
+      TeaserPriceIsFromPrice:
+        description: TeaserPriceIsFromPrice is set to true in cases where a product
+          might have different prices (e.g. configurable)
+        type: boolean
+      URLSlug:
+        type: string
+    type: object
+  domain.WalletDetails:
+    properties:
+      PaymentRequestAPI:
+        $ref: '#/definitions/domain.PaymentRequestAPI'
+      UsedPaymentMethod:
+        type: string
+    type: object
+  paymentResultError:
+    properties:
+      Code:
+        type: string
+      Message:
+        type: string
+    type: object
+  placeorder.CreditCardInfo:
+    properties:
+      AnonymizedCardNumber:
+        type: string
+      CardHolder:
+        type: string
+      Expire:
+        type: string
+      Type:
+        type: string
+    type: object
+  placeorder.PlacedOrderInfo:
+    properties:
+      DeliveryCode:
+        type: string
+      OrderNumber:
+        type: string
+    type: object
+  process.StateData:
+    type: object
+  productResultError:
+    properties:
+      Code:
+        type: string
+      Message:
+        type: string
+    type: object
+  validation.ItemValidationError:
+    properties:
+      ErrorMessageKey:
+        type: string
+      ItemID:
+        type: string
+    type: object
+  validation.Result:
+    properties:
+      CommonErrorMessageKey:
+        type: string
+      HasCommonError:
+        type: boolean
+      ItemResults:
+        items:
+          $ref: '#/definitions/validation.ItemValidationError'
+        type: array
+    type: object
+info:
+  contact:
+    email: flamingo@aoe.com
+    name: Flamingo
+    url: https://gitter.im/i-love-flamingo/community#
+  description: Swagger (OpenAPI) Spec of all Flamingo Commerce modules
+  license:
+    name: MIT
+  title: Flamingo Commerce API Spec
+  version: "1.0"
+paths:
+  /api/v1/cart:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Remove all stored cart information e.g. items, deliveries, billing
+        address and returns the empty cart.
+      tags:
+      - Cart
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.getCartResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Get the current cart
+      tags:
+      - Cart
+  /api/v1/cart/billing:
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - description: vat
+        in: formData
+        name: vat
+        type: string
+      - description: firstname
+        in: formData
+        name: firstname
+        required: true
+        type: string
+      - description: lastname
+        in: formData
+        name: lastname
+        required: true
+        type: string
+      - description: middlename
+        in: formData
+        name: middlename
+        type: string
+      - description: title
+        in: formData
+        name: title
+        type: string
+      - description: salutation
+        in: formData
+        name: salutation
+        type: string
+      - description: street
+        in: formData
+        name: street
+        type: string
+      - description: streetNr
+        in: formData
+        name: streetNr
+        type: string
+      - description: addressLine1
+        in: formData
+        name: addressLine1
+        type: string
+      - description: addressLine2
+        in: formData
+        name: addressLine2
+        type: string
+      - description: company
+        in: formData
+        name: company
+        type: string
+      - description: postCode
+        in: formData
+        name: postCode
+        type: string
+      - description: city
+        in: formData
+        name: city
+        type: string
+      - description: state
+        in: formData
+        name: state
+        type: string
+      - description: regionCode
+        in: formData
+        name: regionCode
+        type: string
+      - description: country
+        in: formData
+        name: country
+        type: string
+      - description: countryCode
+        in: formData
+        name: countryCode
+        type: string
+      - description: phoneAreaCode
+        in: formData
+        name: phoneAreaCode
+        type: string
+      - description: phoneCountryCode
+        in: formData
+        name: phoneCountryCode
+        type: string
+      - description: phoneNumber
+        in: formData
+        name: phoneNumber
+        type: string
+      - description: email
+        in: formData
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Adds billing infos to the current cart
+      tags:
+      - Cart
+  /api/v1/cart/deliveries/items:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Remove all cart items from all deliveries and return the cart, keeps
+        the delivery info untouched.
+      tags:
+      - Cart
+  /api/v1/cart/delivery/{deliveryCode}:
+    delete:
+      parameters:
+      - description: the identifier for the delivery in the cart
+        in: path
+        name: deliveryCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Cleans the given delivery from the cart
+      tags:
+      - Cart
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - description: the identifier for the delivery in the cart
+        in: path
+        name: deliveryCode
+        required: true
+        type: string
+      - description: vat
+        in: formData
+        name: deliveryAddress.vat
+        type: string
+      - description: firstname
+        in: formData
+        name: deliveryAddress.firstname
+        required: true
+        type: string
+      - description: lastname
+        in: formData
+        name: deliveryAddress.lastname
+        required: true
+        type: string
+      - description: middlename
+        in: formData
+        name: deliveryAddress.middlename
+        type: string
+      - description: title
+        in: formData
+        name: deliveryAddress.title
+        type: string
+      - description: salutation
+        in: formData
+        name: deliveryAddress.salutation
+        type: string
+      - description: street
+        in: formData
+        name: deliveryAddress.street
+        type: string
+      - description: streetNr
+        in: formData
+        name: deliveryAddress.streetNr
+        type: string
+      - description: addressLine1
+        in: formData
+        name: deliveryAddress.addressLine1
+        type: string
+      - description: addressLine2
+        in: formData
+        name: deliveryAddress.addressLine2
+        type: string
+      - description: company
+        in: formData
+        name: deliveryAddress.company
+        type: string
+      - description: postCode
+        in: formData
+        name: deliveryAddress.postCode
+        type: string
+      - description: city
+        in: formData
+        name: deliveryAddress.city
+        type: string
+      - description: state
+        in: formData
+        name: deliveryAddress.state
+        type: string
+      - description: regionCode
+        in: formData
+        name: deliveryAddress.regionCode
+        type: string
+      - description: country
+        in: formData
+        name: deliveryAddress.country
+        type: string
+      - description: countryCode
+        in: formData
+        name: deliveryAddress.countryCode
+        type: string
+      - description: phoneAreaCode
+        in: formData
+        name: deliveryAddress.phoneAreaCode
+        type: string
+      - description: phoneCountryCode
+        in: formData
+        name: deliveryAddress.phoneCountryCode
+        type: string
+      - description: phoneNumber
+        in: formData
+        name: deliveryAddress.phoneNumber
+        type: string
+      - description: email
+        in: formData
+        name: deliveryAddress.email
+        required: true
+        type: string
+      - description: useBillingAddress
+        in: formData
+        name: useBillingAddress
+        type: boolean
+      - description: shippingMethod
+        in: formData
+        name: shippingMethod
+        type: string
+      - description: shippingCarrier
+        in: formData
+        name: shippingCarrier
+        type: string
+      - description: locationCode
+        in: formData
+        name: locationCode
+        type: string
+      - description: desired date/time in RFC3339
+        format: date-time
+        in: formData
+        name: desiredTime
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Adds delivery infos, such as shipping address to the delivery for the
+        cart
+      tags:
+      - Cart
+  /api/v1/cart/delivery/{deliveryCode}/item:
+    delete:
+      parameters:
+      - description: the identifier for the delivery in the cart
+        in: path
+        name: deliveryCode
+        required: true
+        type: string
+      - description: the item that should be deleted
+        in: query
+        name: itemID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Delete item from cart
+      tags:
+      - Cart
+    post:
+      parameters:
+      - description: the identifier for the delivery in the cart
+        in: path
+        name: deliveryCode
+        required: true
+        type: string
+      - description: the product identifier that should be added
+        in: query
+        name: marketplaceCode
+        required: true
+        type: string
+      - description: optional the product identifier of the variant (for configurable
+          products) that should be added
+        in: query
+        name: variantMarketplaceCode
+        type: string
+      - description: optional the qty that should be added
+        in: query
+        name: qty
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Add Item to cart
+      tags:
+      - Cart
+    put:
+      parameters:
+      - description: the identifier for the delivery in the cart
+        in: path
+        name: deliveryCode
+        required: true
+        type: string
+      - description: the item that should be updated
+        in: query
+        name: itemID
+        required: true
+        type: string
+      - description: the new qty
+        in: query
+        name: qty
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Update item in the cart
+      tags:
+      - Cart
+  /api/v1/cart/gift-card:
+    delete:
+      parameters:
+      - description: the couponCode that should be deleted as gift card
+        in: query
+        name: couponCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Remove Gift Card
+      tags:
+      - Cart
+    post:
+      parameters:
+      - description: the gift card code
+        in: query
+        name: couponCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Apply Gift Card
+      tags:
+      - Cart
+  /api/v1/cart/payment-selection:
+    put:
+      parameters:
+      - description: name of the payment gateway - e.g. 'offline'
+        in: query
+        name: gateway
+        required: true
+        type: string
+      - description: name of the payment method - e.g. 'offlinepayment_cashondelivery'
+        in: query
+        name: method
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Update/set the PaymentSelection for the current cart
+      tags:
+      - Cart
+  /api/v1/cart/voucher:
+    delete:
+      parameters:
+      - description: the couponCode that should be applied
+        in: query
+        name: couponCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Remove Voucher Code
+      tags:
+      - Cart
+    post:
+      parameters:
+      - description: the couponCode that should be applied
+        in: query
+        name: couponCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Apply Voucher Code
+      tags:
+      - Cart
+  /api/v1/cart/voucher-gift-card:
+    post:
+      description: Use this if you have one user input and that input can be used
+        to either enter a voucher or a gift card
+      parameters:
+      - description: the couponCode that should be applied as gift card or voucher
+        in: query
+        name: couponCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.CartAPIResult'
+      summary: Apply Gift Card or Voucher (auto detected)
+      tags:
+      - Cart
+  /api/v1/checkout/placeorder:
+    delete:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/checkoutError'
+      summary: Clears the last placed order if in final state
+      tags:
+      - Checkout
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.placeOrderContext'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/checkoutError'
+      summary: Returns the last saved context
+      tags:
+      - Checkout
+    put:
+      parameters:
+      - description: the returnURL that should be used after an external payment flow
+        in: query
+        name: returnURL
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 201 if new process was started
+          schema:
+            $ref: '#/definitions/controller.startPlaceOrderResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/checkoutError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/checkoutError'
+      summary: Starts the place order process, which is a background process handling
+        payment and rollbacks if required.
+      tags:
+      - Checkout
+  /api/v1/checkout/placeorder/cancel:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/checkoutError'
+      summary: Cancels a running place order process
+      tags:
+      - Checkout
+  /api/v1/checkout/placeorder/refresh:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.placeOrderContext'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/checkoutError'
+      summary: Returns the current place order context and proceeds the process in
+        a non blocking way
+      tags:
+      - Checkout
+  /api/v1/checkout/placeorder/refresh-blocking:
+    post:
+      description: This is useful to get the most recent place order context, for
+        example after returning from an external payment provider
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.placeOrderContext'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/checkoutError'
+      summary: Proceeds the process and returns the place order context afterwards
+        (blocking)
+      tags:
+      - Checkout
+  /api/v1/payment/status:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/domain.FlowStatus'
+            - properties:
+                data:
+                  $ref: '#/definitions/cart.Cart'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/paymentResultError'
+      summary: Get the payment status of current cart (or last placed cart)
+      tags:
+      - Payment
+  /api/v1/products/{marketplacecode}:
+    get:
+      parameters:
+      - description: the marketplace code (idendifier) for the product
+        in: path
+        name: marketplacecode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.APIResult'
+            - properties:
+                product:
+                  $ref: '#/definitions/domain.SimpleProduct'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.APIResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.APIResult'
+      summary: Gets the requested product
+      tags:
+      - Product
+swagger: "2.0"
+tags:
+- description: All Cart related APIs endpoints, most suitable to be called from a
+    browser, because they rely on the session and cookie headers.
+  name: Cart
+- description: All Payment related APIs endpoints, most suitable to be called from
+    a browser, because they rely on the session and cookie headers.
+  name: Payment
+- description: All Product related APIs endpoints.
+  name: Product
+- description: All Checkout related APIs endpoints, most suitable to be called from
+    a browser, because they rely on the session and cookie headers.
+  name: Checkout

@@ -1,0 +1,104 @@
+# Flamingo framework related configurations:
+core:
+  zap.loglevel: Warn
+  auth:
+    web:
+      debugController: true
+      broker:
+        -
+          broker: "fake"
+          typ: "fake"
+          userConfig:
+            username:
+              password: "password"
+          validatePassword: true
+          usernameFieldId: "username"
+          passwordFieldId: "password"
+
+flamingo:
+  systemendpoint:
+    serviceAddr: ":0"
+  debug:
+    mode: false
+  router:
+    path: /en
+  prefixrouter:
+    rootRedirectHandler:
+      enabled: true
+      redirectTarget: "/en/"
+  session:
+    cookie:
+      secure: false
+    backend: memory
+    saveMode: "OnWrite"
+  opencensus:
+    jaeger:
+      enable: true
+      serviceAddr: ":10000"
+
+graphql:
+  introspectionEnabled: true
+
+# Configs for flamingo-commerce modules
+commerce:
+  order:
+    useFakeAdapter: true
+  payment:
+    # Include the basic payment gateway adapter that provides "offline" payment methods
+    enableOfflinePaymentGateway: true
+  pagination:
+    showFirstPage: false
+    showLastPage: false
+    defaultPageSize: 8
+    showAroundActivePageAmount: 2
+  cart:
+    personalDataForm:
+      additionalFormFields:
+        - "place-order-error"
+        - "reserve-order-id-error"
+    defaultDeliveryCode: "delivery"
+    enableCartCache: false
+    defaultCartAdapter:
+      enabled: true
+      defaultTaxRate: 19
+    emailAdapter:
+      emailAddress: "test@test.de"
+    placeOrderLogger:
+      enabled: false
+  checkout:
+    showEmptyCartPageIfNoItems: true
+    usePersonalDataForm: true
+  product:
+    fakeservice:
+      enabled: true
+      jsonTestDataFolder: "graphql/testdata/products"
+
+    priceIsGross: true
+  customer:
+    useNilCustomerAdapter: false
+  category:
+    useCategoryFixedAdapter: true
+    categoryServiceFixed:
+      tree:
+        electronics:
+          code: pc_laptops
+          name: Electronics
+          sort: 1
+          childs:
+            flat-screen_tvs:
+              code: flat-screen_tvs
+              name: Flat Screens & TV
+            headphones:
+              code: headphones
+              name: Headphones
+              childs:
+                headphone_accessories:
+                  code: headphone_accessories
+                  name: Accessories
+            tablets:
+              code: tablets
+              name: Tablets
+        clothing:
+          code: clothing
+          name: Clothes & Fashion
+          sort: 2

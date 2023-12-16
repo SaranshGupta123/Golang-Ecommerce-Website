@@ -1,0 +1,71 @@
+query {
+    simple: Commerce_Product(marketPlaceCode: "fake_simple") {
+        title
+        marketPlaceCode
+        meta {
+            keywords
+        }
+        price {
+            activeBase {
+                amount
+                currency
+            }
+        }
+    }
+
+    configurable: Commerce_Product(marketPlaceCode: "fake_configurable") {
+        title
+        marketPlaceCode
+        meta {
+            keywords
+        }
+
+        ... on Commerce_Product_ConfigurableProduct {
+            variantSelection {
+                variants {
+                    attributes {
+                        key
+                        value
+                    }
+                    variant {
+                        marketplaceCode
+                    }
+                }
+                attributes {
+                    label
+                    code
+                    options {
+                        label
+                        unitCode
+                        otherAttributesRestrictions {
+                            code
+                            availableOptions
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    active_variant: Commerce_Product(
+        marketPlaceCode: "fake_configurable_with_active_variant"
+    ) {
+        type
+        title
+        meta {
+            keywords
+        }
+
+        ... on Commerce_Product_ActiveVariantProduct {
+            variationSelections {
+                code
+                label
+            }
+            activeVariationSelections {
+                code
+                label
+                value
+            }
+        }
+    }
+}
